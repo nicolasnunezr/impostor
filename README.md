@@ -74,6 +74,8 @@ Railway offers a free tier and integrates directly with GitHub for automatic dep
 
 The free tier includes 500 hours per month, which is sufficient for personal projects and low-traffic applications.
 
+**Note**: If you encounter build errors related to Python version detection, ensure that `runtime.txt` is not present in your repository. Railway automatically detects Python from `requirements.txt`.
+
 ## Technical Details
 
 ### Architecture

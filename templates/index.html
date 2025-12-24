@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Impostor Game</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Settings Button -->
+    <div id="settings-header" class="settings-header">
+        <button id="settings-btn" class="settings-btn">
+            <span class="settings-icon">SETTINGS</span>
+        </button>
+    </div>
+    
+    <!-- Group Management Button (always visible when group exists) -->
+    <div id="group-header" class="group-header" style="display: none;">
+        <button id="group-manage-btn" class="group-manage-btn">
+            <span class="group-icon">GROUP</span>
+            <span id="group-count">0</span>
+        </button>
+    </div>
+    
+    <!-- Start Menu Screen -->
+    <div id="start-screen" class="screen active">
+        <div class="container">
+            
+            <h1 class="title">IMPOSTOR</h1>
+            
+            <div class="mode-selection">
+                <button class="mode-btn" data-mode="casual">CASUAL</button>
+                <button class="mode-btn" data-mode="famous">FAMOUS</button>
+                <button class="mode-btn" data-mode="party">PARTY</button>
+            </div>
+            
+            <div class="game-setup" id="game-setup">
+                <div class="setup-item" id="num-players-item">
+                    <select id="num-players">
+                        <option value="3">3 PLAYERS</option>
+                        <option value="4" selected>4 PLAYERS</option>
+                        <option value="5">5 PLAYERS</option>
+                        <option value="6">6 PLAYERS</option>
+                        <option value="7">7 PLAYERS</option>
+                        <option value="8">8 PLAYERS</option>
+                        <option value="9">9 PLAYERS</option>
+                        <option value="10">10 PLAYERS</option>
+                        <option value="11">11 PLAYERS</option>
+                        <option value="12">12 PLAYERS</option>
+                    </select>
+                </div>
+                
+                <div class="setup-item" id="num-impostors-item">
+                    <select id="num-impostors">
+                        <option value="1" selected>1 IMPOSTOR</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button id="start-btn" class="primary-btn">CONTINUE</button>
+        </div>
+    </div>
+    
+    <!-- Player Names Screen -->
+    <div id="player-names-screen" class="screen">
+        <div class="container">
+            <p class="instruction-text">ENTER PLAYER NAMES</p>
+            <div id="player-names-container" class="player-names-container"></div>
+            <button id="confirm-names-btn" class="primary-btn">START</button>
+        </div>
+    </div>
+    
+    <!-- Player Prompt Screen -->
+    <div id="player-prompt-screen" class="screen">
+        <div class="container">
+            <p class="instruction-text" id="player-name-text"></p>
+            <p class="hint-text">Tap to see your word</p>
+            <button id="reveal-btn" class="primary-btn">REVEAL</button>
+        </div>
+    </div>
+    
+    <!-- Word Reveal Screen -->
+    <div id="word-reveal-screen" class="screen">
+        <div class="container">
+            <p class="instruction-text">YOUR WORD</p>
+            <div id="word-display" class="word-display"></div>
+            <p class="hint-text">Remember your word</p>
+            <button id="next-btn" class="primary-btn">NEXT</button>
+        </div>
+    </div>
+    
+    <!-- Pass Phone Screen -->
+    <div id="pass-phone-screen" class="screen">
+        <div class="container">
+            <p class="instruction-text pass-instruction">PASS DEVICE</p>
+            <p class="hint-text">Give the phone to the next player</p>
+            <div class="pass-animation">
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Hand -->
+                    <g class="hand">
+                        <path d="M 60 80 Q 50 70 40 80 Q 35 85 40 95 L 45 120 Q 50 130 60 125 L 80 120 Q 90 115 95 105 L 100 90 Q 105 80 100 70 Q 95 60 85 65 L 70 70 Q 65 75 60 80 Z" 
+                              fill="none" 
+                              stroke="currentColor" 
+                              stroke-width="1.5" 
+                              stroke-linecap="round" 
+                              stroke-linejoin="round"/>
+                        <!-- Fingers -->
+                        <line x1="45" y1="100" x2="40" y2="110" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        <line x1="55" y1="105" x2="50" y2="115" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        <line x1="70" y1="110" x2="68" y2="120" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        <line x1="85" y1="108" x2="88" y2="118" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </g>
+                    <!-- Device -->
+                    <g class="device">
+                        <rect x="110" y="70" width="50" height="80" rx="3" 
+                              fill="none" 
+                              stroke="currentColor" 
+                              stroke-width="1.5"/>
+                        <line x1="115" y1="85" x2="155" y2="85" stroke="currentColor" stroke-width="1" opacity="0.25"/>
+                        <line x1="115" y1="100" x2="155" y2="100" stroke="currentColor" stroke-width="1" opacity="0.25"/>
+                        <line x1="115" y1="115" x2="155" y2="115" stroke="currentColor" stroke-width="1" opacity="0.25"/>
+                    </g>
+                    <!-- Arrow -->
+                    <g class="arrow">
+                        <path d="M 170 110 L 185 110 M 180 105 L 185 110 L 180 115" 
+                              stroke="currentColor" 
+                              stroke-width="1.5" 
+                              stroke-linecap="round" 
+                              stroke-linejoin="round" 
+                              fill="none"/>
+                    </g>
+                </svg>
+            </div>
+            <button id="continue-btn" class="primary-btn">CONTINUE</button>
+        </div>
+    </div>
+    
+    <!-- Statistics Screen -->
+    <div id="statistics-screen" class="screen">
+        <div class="container">
+            <div class="stat-display" id="stat-display"></div>
+            <button id="stat-next-btn" class="primary-btn">CONTINUE</button>
+        </div>
+    </div>
+    
+    <!-- Final Screen -->
+    <div id="final-screen" class="screen">
+        <div class="container">
+            <p class="instruction-text">ALL PLAYERS READY</p>
+            <div class="final-instructions" id="final-instructions">
+                <p>Each player describes the word.</p>
+                <p>Identify the impostor.</p>
+            </div>
+            <button id="discussion-btn" class="primary-btn">CONTINUE</button>
+        </div>
+    </div>
+    
+    <!-- Party Card Screen -->
+    <div id="party-card-screen" class="screen">
+        <div class="container">
+            <div class="party-card-display" id="party-card-display"></div>
+            <button id="party-card-next-btn" class="primary-btn">CONTINUE</button>
+        </div>
+    </div>
+    
+    <!-- Group Management Screen -->
+    <div id="group-screen" class="screen">
+        <div class="container">
+            <p class="instruction-text">GROUP</p>
+            <div id="players-list" class="players-list"></div>
+            <button id="add-player-btn" class="secondary-btn">+ ADD PLAYER</button>
+            <button id="close-group-btn" class="primary-btn">CLOSE</button>
+        </div>
+    </div>
+    
+    <!-- Add Player Screen -->
+    <div id="add-player-screen" class="screen">
+        <div class="container">
+            <p class="instruction-text">ADD PLAYER</p>
+            <input type="text" id="new-player-input" class="player-name-input" placeholder="PLAYER NAME" maxlength="20">
+            <div class="add-player-actions">
+                <button id="confirm-add-btn" class="primary-btn">ADD</button>
+                <button id="cancel-add-btn" class="secondary-btn">CANCEL</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Game End Screen -->
+    <div id="game-end-screen" class="screen">
+        <div class="container">
+            <p class="instruction-text">GAME END</p>
+            <button id="restart-btn" class="primary-btn">NEW GAME</button>
+        </div>
+    </div>
+    
+    <!-- Toast Message -->
+    <div id="toast-message" class="toast-message">
+        <span id="toast-text"></span>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
+</body>
+</html>
+
